@@ -1,0 +1,42 @@
+#!perl
+
+# DATE
+# VERSION
+
+use 5.010;
+use strict;
+use warnings;
+
+use Perinci::CmdLine::Any;
+
+our %SPEC;
+
+$SPEC{normalize_version} = {
+    v => 1.1,
+    summary => 'Normalize version number(s)',
+    args => {
+        versions => {
+            schema=>['array*', of=>'str*'],
+            req=>1,
+            pos=>0,
+            greedy=>1,
+            cmdline_src => 'stdin_or_args',
+        },
+    },
+};
+sub normalize_version {
+    my %args = @_;
+
+    my @res;
+    for (@{ $args{versions} }) {
+        push @res, version->parse($_)->normal;
+    }
+    [200, "OK", \@res];
+}
+
+Perinci::CmdLine::Any->new(
+    url => "/main/normalize_version",
+)->run;
+
+# ABSTRACT:
+# PODNAME:

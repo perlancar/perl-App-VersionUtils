@@ -1,0 +1,35 @@
+#!perl
+
+# DATE
+# VERSION
+
+use 5.010001;
+use strict;
+use warnings;
+
+use Perinci::CmdLine::Any;
+
+our %SPEC;
+
+$SPEC{compare_version} = {
+    v => 1.1,
+    summary => 'Compare two version numbers',
+    args => {
+        v1 => {schema=>'perl::version*', req=>1, pos=>0},
+        v2 => {schema=>'perl::version*', req=>1, pos=>1},
+    },
+};
+sub compare_version {
+    my %args = @_;
+
+    [200, "OK", $args{v1} <=> $args{v2}];
+}
+
+Perinci::CmdLine::Any->new(
+    url => "/main/compare_version",
+    per_arg_json => 0,
+    per_arg_yaml => 0,
+)->run;
+
+# ABSTRACT:
+# PODNAME:
