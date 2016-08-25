@@ -1,0 +1,52 @@
+#!perl
+
+# DATE
+# VERSION
+
+use 5.010001;
+use strict;
+use warnings;
+
+use Perinci::CmdLine::Any;
+
+our %SPEC;
+
+$SPEC{sort_versions} = {
+    v => 1.1,
+    summary => 'Sort version numbers',
+    args => {
+        versions => {
+            schema => ['array*', of=>'str*'],
+            req => 1,
+            pos => 0,
+            greedy => 1,
+            cmdline_src => 'stdin_or_files',
+        },
+    },
+};
+sub sort_versions {
+    my %args = @_;
+
+    chomp @{ $args{versions} };
+    my @sorted = sort {
+        my ($v_a, $v_b);
+        my $invalid_a = 1;
+        my $invalid_b = 1;
+        eval {
+            $v_a = version->parse($a); $invalid_a = 0;
+            $v_b = version->parse($b); $invalid_b = 0;
+        };
+        my $res = $invalid_a <=> $invalid_b;
+        return $res if $res;
+        $invalid_a ? $a cmp $b : $v_a <=> $v_b;
+    } @{ $args{versions} };
+
+    [200, "OK", \@sorted];
+}
+
+Perinci::CmdLine::Any->new(
+    url => "/main/sort_versions",
+)->run;
+
+# ABSTRACT:
+# PODNAME:
