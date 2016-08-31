@@ -1,5 +1,13 @@
 Revision history for App-VersionUtils
 
+0.003   2016-08-31 (PERLANCAR)
+
+	- No functional changes.
+
+        - [build] Rebuild with updated Dist::Zilla::Plugin::Rinci::AddPrereqs
+          which fixed missing some prereqs.
+
+
 0.002   2016-08-25 (PERLANCAR)
 
 	- Add utility: sort-versions.
