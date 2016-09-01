@@ -1,5 +1,12 @@
 Revision history for App-VersionUtils
 
+0.004   2016-09-01 (PERLANCAR)
+
+	- [ux] compare-version: show result in CLI as a sentence e.g. 'V1
+	  is greater than V2' and show both original and normalized
+	  version.
+
+
 0.003   2016-08-31 (PERLANCAR)
 
 	- No functional changes.
