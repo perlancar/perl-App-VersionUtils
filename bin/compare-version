@@ -22,7 +22,21 @@ $SPEC{compare_version} = {
 sub compare_version {
     my %args = @_;
 
-    [200, "OK", $args{v1} <=> $args{v2}];
+    my $v1 = $args{v1};
+    my $v2 = $args{v2};
+
+    my $cmp = $v1 <=> $v2;
+
+    my $cli_res = join(
+        "",
+        "$v1 (", $v1->normal, ") is ",
+        ($cmp == -1 ? "less than" : $cmp == 0 ? "equal to" : "greater than"),
+        " $v2 (", $v2->normal, ")",
+    );
+
+    [200, "OK", $cmp, {
+        'cmdline.result' => $cli_res,
+    }];
 }
 
 Perinci::CmdLine::Any->new(
